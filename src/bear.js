@@ -1,4 +1,22 @@
 
+import $ from "jquery";
+
+export class Game {
+  constructor(){
+    this.animals = [],
+    this.currentId = 0;
+  }
+
+  addAnimal(animal){
+    animal.id = this.assignId();
+    this.animals.push(animal);
+  }
+
+  assignId(){
+    this.currentId += 1;
+    return this.currentId;
+  }
+}
 
 export class Animal {
   constructor(name) {
@@ -9,18 +27,21 @@ export class Animal {
   }
 
   setHunger(){
+    console.log(this.foodLevel);
     setInterval(() => {
       this.foodLevel--;
+      console.log('in', this.foodLevel);
+      $(`.hunger${this.id}`).text(this.foodLevel);
     }, 10000);
   }
 
 
   setSleep() {
-      this.sleepID = setInterval(() => {
+    this.sleepID = setInterval(() => {
       if(this.sleepLevel > 0){
-      this.sleepLevel--;
+        $(`.sleep${this.id}`).text(this.sleepLevel--);
       }else {
-        this.foodLevel--;
+        $(`.food${this.id}`).text(this.foodLevel--);
       }
     },50000);
   }
@@ -28,9 +49,9 @@ export class Animal {
   setPlay(){
     setInterval(() => {
       if(this.playLevel > 0){
-        this.playLevel--;
+        $(`.play${this.id}`).text(this.playLevel--);
       } else {
-        this.sleepLevel--;
+        $(`.sleep${this.id}`).text(this.sleepLevel--);
       }
     },25000);
   }
@@ -53,10 +74,10 @@ export class Animal {
       let secondInternval = setInterval(() => {
         this.sleepLevel++;
         if(this.sleepLevel >= 10){
-          clearInterval(secondInternval)
+          clearInterval(secondInternval);
           this.setSleep();
         }
-      },25000)
+      },25000);
     }
   }
 
